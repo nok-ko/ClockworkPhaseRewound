@@ -2,6 +2,7 @@ package me.nokko.cpr;
 
 import me.nokko.cpr.init.ModBlocks;
 import me.nokko.cpr.init.ModItems;
+import me.nokko.cpr.recipe.ModRecipes;
 import net.fabricmc.api.ModInitializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,5 +21,7 @@ public class ClockworkPhaseRewound implements ModInitializer {
 		// Run the items module:
 		ModItems.registerItems();
 		ModBlocks.registerBlocks();
+		// Register recipes:
+		ModRecipes.registerRecipes();
 	}
 }

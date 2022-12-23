@@ -13,18 +13,38 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.Enchantments;
 
-import org.lwjgl.nanovg.NVGColor;
-import static org.lwjgl.nanovg.NanoVG.*;
-import static org.lwjgl.nanovg.NanoVGGL3.NVG_STENCIL_STROKES;
-import static org.lwjgl.nanovg.NanoVGGL3.nvgCreate;
+import java.util.Set;
 
 public class ClockworkAssemblyTableBlockEntityRenderer implements BlockEntityRenderer<ClockworkAssemblyTableBlockEntity> {
-    private final long vg;
 
     public ClockworkAssemblyTableBlockEntityRenderer(BlockEntityRendererProvider.Context ctx) {
-        this.vg = nvgCreate(NVG_STENCIL_STROKES);
+    }
+
+    public void renderClockworkTool(ItemStack stack,
+                                    float time,
+                                    float partialTicks,
+                                    PoseStack poseStack,
+                                    MultiBufferSource buffer,
+                                    int light,
+                                    int combinedOverlay) {
+        poseStack.pushPose();
+        double offset = Math.sin((time + partialTicks) / 8.0) / 32.0;
+        poseStack.translate(0.5, 1.25 + offset, 0.5);
+        poseStack.mulPose(Axis.YP.rotationDegrees((time + partialTicks) * 4));
+        poseStack.scale(1.2f, 1.2f, 1.2f);
+
+        Minecraft.getInstance().getItemRenderer().renderStatic(
+                stack,
+                ItemTransforms.TransformType.GROUND,
+                light,
+                OverlayTexture.NO_OVERLAY,
+                poseStack,
+                buffer,
+                combinedOverlay
+        );
+
+        poseStack.popPose();
     }
 
     @Override
@@ -37,29 +57,16 @@ public class ClockworkAssemblyTableBlockEntityRenderer implements BlockEntityRen
         poseStack.pushPose();
 
         // Height offset (for the bobbing animation.)
-        double offset = Math.sin((blockEntity.getLevel().getGameTime() + partialTicks) / 8.0) / 32.0;
-        poseStack.translate(0.5, 1.25 + offset, 0.5);
-        poseStack.mulPose(Axis.YP.rotationDegrees((blockEntity.getLevel().getGameTime() + partialTicks) * 4));
-        poseStack.scale(1.2f, 1.2f, 1.2f);
 
+        float time = blockEntity.getLevel().getGameTime();
         int lightAbove = LevelRenderer.getLightColor(blockEntity.getLevel(), blockEntity.getBlockPos().above());
-
-        ItemStack floatingItem = ((Container) blockEntity).getItem(0);
-
-        if (floatingItem.isEmpty()) {
+        var toolStack = blockEntity.getItems().get(ClockworkAssemblyTableBlockEntity.TOOL_SLOT);
+        if (!toolStack.isEmpty()) {
+            renderClockworkTool(toolStack, partialTicks, time, poseStack, buffer, lightAbove, combinedOverlay);
+        } else {
             poseStack.popPose();
             return;
-        };
-
-        Minecraft.getInstance().getItemRenderer().renderStatic(
-                floatingItem,
-                ItemTransforms.TransformType.GROUND,
-                lightAbove,
-                OverlayTexture.NO_OVERLAY,
-                poseStack,
-                buffer,
-                combinedOverlay
-        );
+        }
 
         poseStack.popPose();
     }

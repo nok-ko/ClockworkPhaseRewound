@@ -30,25 +30,25 @@ public class ClockworkAssemblyTableBlock extends Block implements EntityBlock {
 
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-        if (level.isClientSide) {
-            if (player.getItemInHand(hand).isEmpty()) {
-                player.sendSystemMessage(Component.literal(
-                        ((SimpleContainer) level.getBlockEntity(pos)).getItems().toString()
-                ));
-            }
-            return InteractionResult.SUCCESS;
+//        if (level.isClientSide) {
+//            return InteractionResult.SUCCESS;
+//        }
+
+        if (!(level.getBlockEntity(pos) instanceof ClockworkAssemblyTableBlockEntity assemblyTable)) {
+            return InteractionResult.PASS;
         }
-        Container blockEntity = (Container) level.getBlockEntity(pos);
-        if (!player.getItemInHand(hand).isEmpty()) {
-            if (blockEntity.getItem(0).isEmpty()) {
-                blockEntity.setItem(0, player.getItemInHand(hand).copy());
-                player.getItemInHand(hand).setCount(0);
-            }
-            level.sendBlockUpdated(pos, state, state, Block.UPDATE_ALL);
+
+        var heldItem = player.getItemInHand(hand);
+
+        if (!heldItem.isEmpty() && assemblyTable.canAccept(heldItem)) {
+            assemblyTable.acceptItem(heldItem);
+            player.getItemInHand(hand).setCount(0);
         } else {
-            player.sendSystemMessage(Component.literal(
-                    ((SimpleContainer) level.getBlockEntity(pos)).getItems().toString()
-            ));
+            if (player.isCrouching()) {
+                assemblyTable.tryCraft(player);
+            } else {
+                assemblyTable.retrieveItem(player);
+            }
         }
         return InteractionResult.SUCCESS;
     }
