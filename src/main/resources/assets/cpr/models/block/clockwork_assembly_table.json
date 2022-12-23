@@ -1,0 +1,7 @@
+{
+  "parent": "block/cube_top",
+  "textures": {
+    "side": "cpr:block/clockwork_assembly_table",
+    "top": "cpr:block/clockwork_assembly_table_top"
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "id": "cpr",
+  "version": "${version}",
+
+  "name": "Clockwork Phase: Rewound",
+  "description": "A port of the Clockwork Phase mod to Fabric 1.19.2",
+  "authors": [
+    "nokko",
+    "Lumaceon"
+  ],
+  "contact": {
+    "sources": "https://github.com/nok-ko/ClockworkPhaseRewound"
+  },
+
+  "license": "CC0-1.0",
+  "icon": "assets/cpr/icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "me.nokko.cpr.ClockworkPhaseRewound"
+    ],
+    "client": [
+      "me.nokko.cpr.client.ClockworkPhaseRewoundClient"
+    ]
+  },
+  "mixins": [
+    "cpr.mixins.json"
+  ],
+
+  "depends": {
+    "fabricloader": ">=0.14.11",
+    "fabric-api": "*",
+    "minecraft": "~1.19.3",
+    "java": ">=17"
+  }
+}
