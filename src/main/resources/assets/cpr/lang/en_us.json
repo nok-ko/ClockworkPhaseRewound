@@ -73,7 +73,8 @@
   "item.cpr.temporal_multitool": "tEMPorAl mULtI-tOoL",
   "item.cpr.pocket_watch": "Pocket Watch",
 
-  "cpr.contents.are": "Contains:",
+  "cpr.has_components": "Components:",
+  "cpr.no_components": "No Components",
 
   "item.cpr.clockwork_headpiece": "Clockwork Headpiece",
   "item.cpr.clockwork_chestplate": "Clockwork Chestplate",
@@ -90,7 +91,7 @@
   "tile.cpr:brass_block": "Brass Block",
   "block.cpr.clockwork_assembly_table": "Clockwork Assembly Table",
   "block.cpr.winding_box": "Winding Box",
-  "block.cpr:disassembly_table": "Disassembly Table",
+  "block.cpr.disassembly_table": "Disassembly Table",
   "tile.cpr:growth_extractor": "Growth Extractor",
   "tile.cpr:time_sand": "Time Sand",
   "tile.cpr:celestial_compass": "Celestial Compass Core",
