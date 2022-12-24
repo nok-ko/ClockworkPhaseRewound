@@ -14,6 +14,7 @@ import java.util.concurrent.CompletableFuture;
 
 import static me.nokko.cpr.ClockworkPhaseRewound.MOD_ID;
 import static me.nokko.cpr.init.ModItems.*;
+import static me.nokko.cpr.init.ModItemTags.*;
 
 public class ItemTagProvider extends FabricTagProvider<Item> {
     /**
@@ -30,6 +31,7 @@ public class ItemTagProvider extends FabricTagProvider<Item> {
 
     @Override
     protected void addTags(HolderLookup.Provider arg) {
+        // Generate the #cpr:gears tag
         getOrCreateTagBuilder(TagKey.create(Registries.ITEM, new ResourceLocation(MOD_ID, "gears")))
                 .add(BRASS_GEAR)
                 .add(BRASS_GEAR)
@@ -46,5 +48,24 @@ public class ItemTagProvider extends FabricTagProvider<Item> {
                 .add(TEMPORAL_GEAR)
                 .add(THAUMIUM_GEAR)
                 .add(TIN_GEAR);
+        // Generate the #cpr:clockwork_tools tag
+        getOrCreateTagBuilder(TagKey.create(Registries.ITEM, new ResourceLocation(MOD_ID, "clockwork_tools")))
+                .add(CLOCKWORK_PICKAXE);
+
+        // Generate the #cpr:clockworks tag
+        getOrCreateTagBuilder(TagKey.create(Registries.ITEM, new ResourceLocation(MOD_ID, "clockworks")))
+                .add(CLOCKWORK);
+
+        // Generate the #cpr:frameworks tag
+        getOrCreateTagBuilder(TagKey.create(Registries.ITEM, new ResourceLocation(MOD_ID, "frameworks")))
+                .add(FRAMEWORK);
+
+        // Generate the #cpr:gear_acceptors tag
+        getOrCreateTagBuilder(TagKey.create(Registries.ITEM, new ResourceLocation(MOD_ID, "gear_acceptors")))
+                .addTag(CLOCKWORKS);
+
+        // Generate the #cpr:framework_acceptors tag
+        getOrCreateTagBuilder(TagKey.create(Registries.ITEM, new ResourceLocation(MOD_ID, "framework_acceptors")))
+                .addTag(CLOCKWORK_TOOLS);
     }
 }

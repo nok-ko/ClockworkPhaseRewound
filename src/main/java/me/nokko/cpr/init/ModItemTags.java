@@ -9,6 +9,7 @@ import static me.nokko.cpr.ClockworkPhaseRewound.MOD_ID;
 
 public class ModItemTags {
     public static final TagKey<Item> CLOCKWORK_TOOLS = TagKey.create(Registries.ITEM, new ResourceLocation(MOD_ID, "clockwork_tools"));
+    public static final TagKey<Item> CLOCKWORKS = TagKey.create(Registries.ITEM, new ResourceLocation(MOD_ID, "clockworks"));
     public static final TagKey<Item> FRAMEWORKS = TagKey.create(Registries.ITEM, new ResourceLocation(MOD_ID, "frameworks"));
     public static final TagKey<Item> FRAMEWORK_ACCEPTORS = TagKey.create(Registries.ITEM, new ResourceLocation(MOD_ID, "framework_acceptors"));
     public static final TagKey<Item> CPR_GEARS = TagKey.create(Registries.ITEM, new ResourceLocation(MOD_ID, "gears"));
