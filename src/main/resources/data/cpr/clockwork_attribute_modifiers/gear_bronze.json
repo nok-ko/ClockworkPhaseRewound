@@ -1,0 +1,8 @@
+{
+  "id": "cpr:gear_bronze",
+  "attributes": {
+    "QUALITY": 50,
+    "SPEED": 25,
+    "MEMORY": 0
+  }
+}
