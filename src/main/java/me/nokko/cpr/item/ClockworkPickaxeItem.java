@@ -38,6 +38,14 @@ public class ClockworkPickaxeItem extends PickaxeItem implements ClockworkTool {
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltipComponents, TooltipFlag isAdvanced) {
         var components = stack.getTag().getList("ClockworkComponents", Tag.TAG_COMPOUND);
+
+        // Early exit if there are no components, so we don't write an empty "Contains:" line.
+        if (components.isEmpty()) {
+            super.appendHoverText(stack, level, tooltipComponents, isAdvanced);
+            return;
+        }
+
+        // List all the components in the tooltip.
         tooltipComponents.add(Component.translatable("cpr.contents.are").withStyle(ChatFormatting.GRAY));
         for (Tag component : components) {
             tooltipComponents.add(
@@ -45,7 +53,6 @@ public class ClockworkPickaxeItem extends PickaxeItem implements ClockworkTool {
                             .withStyle(ChatFormatting.DARK_PURPLE)
             );
         }
-
         super.appendHoverText(stack, level, tooltipComponents, isAdvanced);
     }
 }
