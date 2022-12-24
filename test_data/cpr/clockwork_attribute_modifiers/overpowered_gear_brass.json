@@ -1,0 +1,8 @@
+{
+  "id": "cpr:gear_brass",
+  "attributes": {
+    "QUALITY": 2000,
+    "SPEED": 5500,
+    "MEMORY": 1000
+  }
+}
