@@ -41,12 +41,13 @@ public class ClockworkPickaxeItem extends PickaxeItem implements ClockworkTool {
 
         // Early exit if there are no components, so we don't write an empty "Contains:" line.
         if (components.isEmpty()) {
+            tooltipComponents.add(Component.translatable("cpr.no_components").withStyle(ChatFormatting.DARK_GRAY));
             super.appendHoverText(stack, level, tooltipComponents, isAdvanced);
             return;
         }
 
         // List all the components in the tooltip.
-        tooltipComponents.add(Component.translatable("cpr.contents.are").withStyle(ChatFormatting.GRAY));
+        tooltipComponents.add(Component.translatable("cpr.has_components").withStyle(ChatFormatting.GRAY));
         for (Tag component : components) {
             tooltipComponents.add(
                     ItemStack.of((CompoundTag) component).getHoverName().copy()
