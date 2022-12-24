@@ -128,5 +128,9 @@
   "key.cpr.headpiece": "Chrono Armor Headpiece Ability",
   "key.cpr.chestpiece": "Chrono Armor Chestpiece Ability",
   "key.cpr.leggings": "Chrono Armor Leggings Ability",
-  "key.cpr.boots": "Chrono Armor Boots Ability"
+  "key.cpr.boots": "Chrono Armor Boots Ability",
+
+  "cpr.tooltip_SPEED": "Speed: %s",
+  "cpr.tooltip_QUALITY": "Quality: %s",
+  "cpr.tooltip_MEMORY": "Memory: %s"
 }
