@@ -14,9 +14,11 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.Optional;
 
 public class ClockworkAssemblyRecipe implements Recipe<ClockworkAssemblyTableBlockEntity> {
     private ResourceLocation id;
+    private Optional<Ingredient> transmuteItem;
 
     public Ingredient getTool() {
         return tool;
@@ -29,10 +31,11 @@ public class ClockworkAssemblyRecipe implements Recipe<ClockworkAssemblyTableBlo
     private Ingredient tool;
     private Ingredient additionalItem;
 
-    public ClockworkAssemblyRecipe(ResourceLocation id, Ingredient tool, Ingredient additionalItem) {
+    public ClockworkAssemblyRecipe(ResourceLocation id, Ingredient tool, Ingredient additionalItem, Optional<Ingredient> transmuteItem) {
         this.id = id;
         this.tool = tool;
         this.additionalItem = additionalItem;
+        this.transmuteItem = transmuteItem;
     }
 
     @Override
@@ -48,6 +51,17 @@ public class ClockworkAssemblyRecipe implements Recipe<ClockworkAssemblyTableBlo
         List<ItemStack> additionStacks = container.getItems().stream().filter(additionalItem).toList();
 
         ItemStack baseTool = toolStacks.get(0).copy();
+
+        // Transmute the initial item into the new thing specified in the recipe, if any.
+        if (transmuteItem.isPresent()) {
+            // Will probably break somewhat if someone stuffs an entire tag into the transmute ingredient,
+            // but that's kind of an edge case. (What would you expect to happen?)
+            var oldBaseTool = baseTool;
+            baseTool = transmuteItem.get().getItems()[0].copy();
+
+            // Copy NBT, hopefully.
+            baseTool.setTag(oldBaseTool.getOrCreateTag());
+        }
 
         ListTag clockworkComponents;
         if (baseTool.getTag() != null) {
@@ -84,6 +98,10 @@ public class ClockworkAssemblyRecipe implements Recipe<ClockworkAssemblyTableBlo
     @Override @NotNull
     public RecipeSerializer<?> getSerializer() {
         return ClockworkAssemblyRecipeSerializer.INSTANCE;
+    }
+
+    public Optional<Ingredient> getTransmuteItem() {
+        return transmuteItem;
     }
 
     // Singleton type

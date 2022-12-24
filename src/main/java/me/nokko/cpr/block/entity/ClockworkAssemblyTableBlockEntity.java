@@ -16,6 +16,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.ContainerHelper;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
@@ -77,9 +78,10 @@ public class ClockworkAssemblyTableBlockEntity extends BlockEntity implements Si
             return true;
         } else if (items.get(ADDITIONAL_SLOT).isEmpty() && (stack.is(FRAMEWORKS) || stack.is(CPR_GEARS))) {
             // Other things go here in the additional slot.
-            return items.get(ADDITIONAL_SLOT).isEmpty();
+            return true;
+        } else {
+            return false;
         }
-        return false;
     }
 
 
@@ -88,13 +90,26 @@ public class ClockworkAssemblyTableBlockEntity extends BlockEntity implements Si
      * @param heldItem
      */
     public void acceptItem(ItemStack heldItem) {
-        if (items.get(TOOL_SLOT).isEmpty()) {
-            if (heldItem.is(FRAMEWORK_ACCEPTORS) || heldItem.is(CPR_GEAR_ACCEPTORS)) {
+        if (heldItem.is(FRAMEWORK_ACCEPTORS) || heldItem.is(CPR_GEAR_ACCEPTORS)) {
+            if (items.get(TOOL_SLOT).isEmpty()) {
                 this.setItem(TOOL_SLOT, heldItem.copy());
+            } else {
+                // Try not to eat items, even if we can't take them.
+                if (!level.isClientSide) {
+                    level.addFreshEntity(
+                            new ItemEntity(level, worldPosition.getX(), worldPosition.getY() + 1, worldPosition.getZ(), heldItem.copy())
+                    );
+                }
             }
-        } else if (items.get(ADDITIONAL_SLOT).isEmpty()) {
-            if (heldItem.is(FRAMEWORKS) || heldItem.is(CPR_GEARS)) {
+        } else if (heldItem.is(FRAMEWORKS) || heldItem.is(CPR_GEARS)) {
+            if (items.get(ADDITIONAL_SLOT).isEmpty()) {
                 this.setItem(ADDITIONAL_SLOT, heldItem.copy());
+            } else {
+                if (!level.isClientSide) {
+                    level.addFreshEntity(
+                            new ItemEntity(level, worldPosition.getX(), worldPosition.getY() + 1, worldPosition.getZ(), heldItem.copy())
+                    );
+                }
             }
         }
         level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Block.UPDATE_ALL);
