@@ -2,8 +2,11 @@ package me.nokko.cpr;
 
 import me.nokko.cpr.init.ModBlocks;
 import me.nokko.cpr.init.ModItems;
+import me.nokko.cpr.data.ClockworkAttributeReloadListener;
 import me.nokko.cpr.recipe.ModRecipes;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
+import net.minecraft.server.packs.PackType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,7 +24,17 @@ public class ClockworkPhaseRewound implements ModInitializer {
 		// Run the items module:
 		ModItems.registerItems();
 		ModBlocks.registerBlocks();
+
 		// Register recipes:
 		ModRecipes.registerRecipes();
+
+		// Register reload listeners:
+
+		// Note that 1.19.3 changed reload listeners, the Fabric wiki is currently outdated but there are helpful tips
+		// in the release notes.
+		ResourceManagerHelper.get(PackType.SERVER_DATA).registerReloadListener(
+				new ClockworkAttributeReloadListener()
+		);
 	}
+
 }
