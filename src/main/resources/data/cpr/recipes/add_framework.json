@@ -1,9 +1,9 @@
 {
   "type": "cpr:clockwork_assembly",
   "tool": {
-    "item": "cpr:clockwork_pickaxe"
+    "tag": "cpr:clockwork_tools"
   },
   "additionalItem": {
-    "item": "minecraft:gold_ingot"
+    "tag": "cpr:frameworks"
   }
 }

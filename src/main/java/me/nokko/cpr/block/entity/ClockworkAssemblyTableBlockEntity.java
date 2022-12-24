@@ -5,6 +5,7 @@ import me.nokko.cpr.item.ClockworkTool;
 import me.nokko.cpr.recipe.ClockworkAssemblyRecipe;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
@@ -27,6 +28,7 @@ import java.util.Optional;
 
 import static me.nokko.cpr.init.ModBlocks.CLOCKWORK_ASSEMBLY_TABLE_BLOCK_ENTITY;
 import static me.nokko.cpr.ClockworkPhaseRewound.LOGGER;
+import static me.nokko.cpr.init.ModItemTags.*;
 
 public class ClockworkAssemblyTableBlockEntity extends BlockEntity implements SimpleContainer {
     public static int SLOTS = 2;
@@ -70,11 +72,14 @@ public class ClockworkAssemblyTableBlockEntity extends BlockEntity implements Si
     }
 
     public boolean canAccept(ItemStack stack) {
-        if (stack.getItem() instanceof ClockworkTool) {
-            return items.get(TOOL_SLOT).isEmpty();
-        } else {
+        if (items.get(TOOL_SLOT).isEmpty() && (stack.is(FRAMEWORK_ACCEPTORS) || stack.is(CPR_GEAR_ACCEPTORS))) {
+            // Things that take frameworks or gears can go in the main slot.
+            return true;
+        } else if (items.get(ADDITIONAL_SLOT).isEmpty() && (stack.is(FRAMEWORKS) || stack.is(CPR_GEARS))) {
+            // Other things go here in the additional slot.
             return items.get(ADDITIONAL_SLOT).isEmpty();
         }
+        return false;
     }
 
 
@@ -83,12 +88,14 @@ public class ClockworkAssemblyTableBlockEntity extends BlockEntity implements Si
      * @param heldItem
      */
     public void acceptItem(ItemStack heldItem) {
-        if (heldItem.getItem() instanceof ClockworkTool) {
-            if (items.get(TOOL_SLOT).isEmpty()) {
+        if (items.get(TOOL_SLOT).isEmpty()) {
+            if (heldItem.is(FRAMEWORK_ACCEPTORS) || heldItem.is(CPR_GEAR_ACCEPTORS)) {
                 this.setItem(TOOL_SLOT, heldItem.copy());
             }
         } else if (items.get(ADDITIONAL_SLOT).isEmpty()) {
-            this.setItem(ADDITIONAL_SLOT, heldItem.copy());
+            if (heldItem.is(FRAMEWORKS) || heldItem.is(CPR_GEARS)) {
+                this.setItem(ADDITIONAL_SLOT, heldItem.copy());
+            }
         }
         level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Block.UPDATE_ALL);
         LOGGER.info(items.toString());

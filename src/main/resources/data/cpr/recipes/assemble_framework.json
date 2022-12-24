@@ -1,0 +1,9 @@
+{
+  "type": "cpr:clockwork_assembly",
+  "tool": {
+    "tag": "cpr:frameworks"
+  },
+  "additionalItem": {
+    "tag": "cpr:gears"
+  }
+}
