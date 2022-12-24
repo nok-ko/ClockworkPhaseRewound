@@ -10,6 +10,10 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -95,19 +99,16 @@ public class ClockworkAssemblyTableBlockEntity extends BlockEntity implements Si
      * Give the result to the passed-in player.
      */
     public void tryCraft(Player crafter) {
-        crafter.sendSystemMessage(Component.literal(
-                this.getItems().toString()
-        ));
         Optional<ClockworkAssemblyRecipe> canCraft = level.getRecipeManager()
                 .getRecipeFor(ClockworkAssemblyRecipe.Type.INSTANCE, this, level);
 
         if (canCraft.isPresent()) {
-            crafter.sendSystemMessage(Component.literal("Can craft!"));
             crafter.getInventory().add(canCraft.get().assemble(this));
             this.clearContent();
             level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Block.UPDATE_ALL);
+            level.playLocalSound(getBlockPos(), SoundEvents.NOTE_BLOCK_BELL.value(), SoundSource.BLOCKS, 1.0F, 1.0F, false);
         } else {
-            crafter.sendSystemMessage(Component.literal("No match!"));
+            level.playLocalSound(getBlockPos(), SoundEvents.DISPENSER_FAIL, SoundSource.BLOCKS, 1.0F, 1.0F, false);
         }
     }
 
