@@ -1,0 +1,24 @@
+{
+  "type":"object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "attributes": {
+      "type": "object",
+      "properties": {
+        "SPEED": {
+          "type": "integer"
+        },
+        "QUALITY": {
+          "type": "integer"
+        },
+        "MEMORY": {
+          "type": "integer"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}
