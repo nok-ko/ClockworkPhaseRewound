@@ -1,10 +1,7 @@
 package me.nokko.cpr.item;
 
-import net.minecraft.ChatFormatting;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.PickaxeItem;
@@ -15,8 +12,6 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-
-//import static me.nokko.cpr.ClockworkPhaseRewound.LOGGER;
 
 public class ClockworkPickaxeItem extends PickaxeItem implements ClockworkTool {
     public ClockworkPickaxeItem(Tier tier, int damage, float speed, Properties properties) {
@@ -30,30 +25,32 @@ public class ClockworkPickaxeItem extends PickaxeItem implements ClockworkTool {
         }
 
         if (context.getPlayer().isCrouching()) {
-            context.getPlayer().sendSystemMessage(Component.literal(context.getItemInHand().getTag().toString()));
+            context.getPlayer().sendSystemMessage(
+                    Component.literal(
+                            context.getPlayer().getItemInHand(InteractionHand.OFF_HAND).getOrCreateTag().toString()
+                    )
+            );
+            var stack = context.getPlayer().getItemInHand(InteractionHand.OFF_HAND);
+            var component = makeComponent(stack);
+            context.getPlayer().sendSystemMessage(
+                    Component.literal(
+                            ClockworkComponentLike.asString(component, stack)
+                    )
+            );
         }
         return super.useOn(context);
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltipComponents, TooltipFlag isAdvanced) {
-        var components = stack.getTag().getList("ClockworkComponents", Tag.TAG_COMPOUND);
+    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltipComponents, TooltipFlag flag) {
+        // Basic tooltip section, listing the total speed, quality, and memory.
+        ClockworkComponent.addBasicTooltip(makeComponent(stack), tooltipComponents, flag);
 
-        // Early exit if there are no components, so we don't write an empty "Contains:" line.
-        if (components.isEmpty()) {
-            tooltipComponents.add(Component.translatable("cpr.no_components").withStyle(ChatFormatting.DARK_GRAY));
-            super.appendHoverText(stack, level, tooltipComponents, isAdvanced);
-            return;
+        // Advanced tooltip section, listing all the components for debug purposes.
+        if (flag.isAdvanced()) {
+            ClockworkTool.addAdvancedTooltip(stack, tooltipComponents);
         }
 
-        // List all the components in the tooltip.
-        tooltipComponents.add(Component.translatable("cpr.has_components").withStyle(ChatFormatting.GRAY));
-        for (Tag component : components) {
-            tooltipComponents.add(
-                    ItemStack.of((CompoundTag) component).getHoverName().copy()
-                            .withStyle(ChatFormatting.DARK_PURPLE)
-            );
-        }
-        super.appendHoverText(stack, level, tooltipComponents, isAdvanced);
+        super.appendHoverText(stack, level, tooltipComponents, flag);
     }
 }
