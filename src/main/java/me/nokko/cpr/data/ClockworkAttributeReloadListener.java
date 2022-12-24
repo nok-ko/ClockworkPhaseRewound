@@ -29,11 +29,13 @@ public class ClockworkAttributeReloadListener implements SimpleSynchronousResour
 
     @Override
     public void onResourceManagerReload(ResourceManager resourceManager) {
+        // TODO: reduce log spam in this method.
         int resourcesCount = 0;
         for (Map.Entry<ResourceLocation, Resource> entry : JSON_CONVERTER.listMatchingResources(resourceManager).entrySet()) {
             ResourceLocation resourceLocation = entry.getKey();
             Resource resource = entry.getValue();
             try (InputStream stream = resource.open()) {
+                // Parse the document with Gson:
                 var json = JsonParser.parseReader(new InputStreamReader(stream));
                 var data = new GsonBuilder().create().fromJson(json, ClockworkAttributeData.class);
 
