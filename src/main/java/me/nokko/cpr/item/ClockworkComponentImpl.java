@@ -1,6 +1,6 @@
 package me.nokko.cpr.item;
 
-import me.nokko.cpr.data.ClockworkAttributeReloadable;
+import me.nokko.cpr.datapack.ClockworkAttributeReloadable;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.EnumMap;

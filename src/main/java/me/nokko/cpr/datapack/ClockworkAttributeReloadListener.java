@@ -1,4 +1,4 @@
-package me.nokko.cpr.data;
+package me.nokko.cpr.datapack;
 
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParseException;

@@ -96,3 +96,31 @@ publishing {
 		// retrieving dependencies.
 	}
 }
+
+loom {
+	runs {
+		datagenClient {
+			// Delete existing generated files upon running the data gen module.
+			file("src/main/generated").deleteDir()
+			inherit client
+			name "Data Generation"
+			vmArg "-Dfabric-api.datagen"
+			vmArg "-Dfabric-api.datagen.output-dir=${file("src/main/generated")}"
+			vmArg "-Dfabric-api.datagen.modid=${mod_id}"
+			// Remove the arg that requires all datagen to be complete
+//			getVmArgs().removeIf(arg -> arg.matches(//))
+
+			runDir "build/datagen"
+		}
+	}
+}
+
+sourceSets {
+	main {
+		resources {
+			srcDirs += [
+					'src/main/generated'
+			]
+		}
+	}
+}

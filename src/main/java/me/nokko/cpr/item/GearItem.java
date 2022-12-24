@@ -1,6 +1,6 @@
 package me.nokko.cpr.item;
 
-import me.nokko.cpr.data.ClockworkAttributeReloadable;
+import me.nokko.cpr.datapack.ClockworkAttributeReloadable;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -10,8 +10,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Map;
-
-import static me.nokko.cpr.item.ClockworkAttr.*;
 
 public abstract class GearItem extends Item implements ClockworkComponent, ClockworkAttributeReloadable {
     protected Map<ClockworkAttr, Integer> clockworkAttributes;

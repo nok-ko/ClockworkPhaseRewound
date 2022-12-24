@@ -2,7 +2,7 @@ package me.nokko.cpr;
 
 import me.nokko.cpr.init.ModBlocks;
 import me.nokko.cpr.init.ModItems;
-import me.nokko.cpr.data.ClockworkAttributeReloadListener;
+import me.nokko.cpr.datapack.ClockworkAttributeReloadListener;
 import me.nokko.cpr.recipe.ModRecipes;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;

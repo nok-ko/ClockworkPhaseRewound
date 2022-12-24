@@ -1,4 +1,4 @@
-package me.nokko.cpr.data;
+package me.nokko.cpr.datapack;
 
 import me.nokko.cpr.item.ClockworkAttr;
 import net.minecraft.world.item.Item;
