@@ -1,0 +1,5 @@
+{
+  "variants": {
+    "": { "model": "cpr:block/disassembly_table" }
+  }
+}
