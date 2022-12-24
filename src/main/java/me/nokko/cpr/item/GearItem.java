@@ -21,11 +21,9 @@ public abstract class GearItem extends Item implements ClockworkComponent, Clock
         return clockworkAttributes;
     }
 
-    public GearItem(int defaultSpeed, int defaultQuality, Properties properties) {
+    public GearItem(Properties properties) {
         super(properties);
         clockworkAttributes = ClockworkComponent.defaultAttributes();
-        clockworkAttributes.put(SPEED, defaultSpeed);
-        clockworkAttributes.put(QUALITY, defaultQuality);
     }
 
     public void updateAttributes(Map<ClockworkAttr, Integer> newAttributes) {
@@ -35,6 +33,8 @@ public abstract class GearItem extends Item implements ClockworkComponent, Clock
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltipComponents, TooltipFlag flag) {
         // List all the ClockworkAttrs on this item.
+        // Pass in a fake TooltipFlag to prevent the blank space code in `addBasicTooltip` from triggering.
+        // TODO: maybe remove the blank space code and inline it where relevant?
         ClockworkComponent.addBasicTooltip(makeComponent(stack), tooltipComponents, new TooltipFlag.Default(false, false));
         super.appendHoverText(stack, level, tooltipComponents, flag);
     }

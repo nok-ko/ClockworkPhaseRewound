@@ -1,6 +1,18 @@
 {
   "replace": false,
   "values": [
-    "cpr:gear_brass"
+    "cpr:gear_brass",
+    "cpr:gear_bronze",
+    "cpr:gear_legendary",
+    "cpr:gear_copper",
+    "cpr:gear_diamond",
+    "cpr:gear_emerald",
+    "cpr:gear_iron",
+    "cpr:gear_lead",
+    "cpr:gear_silver",
+    "cpr:gear_steel",
+    "cpr:gear_temporal",
+    "cpr:gear_thaumium",
+    "cpr:gear_tin"
   ]
 }
