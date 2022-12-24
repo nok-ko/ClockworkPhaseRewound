@@ -14,6 +14,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tiers;
 
+import static me.nokko.cpr.init.ModBlocks.*;
+
 public class ModItems {
 
     public static final Item CLOCKWORK_PICKAXE = registerItem("clockwork_pickaxe", new ClockworkPickaxeItem(
@@ -37,6 +39,9 @@ public class ModItems {
         // Add the items to our custom item group.
         ItemGroupEvents.modifyEntriesEvent(MAIN_GROUP).register(content -> {
             content.accept(CLOCKWORK_PICKAXE);
+            content.accept(WINDING_BOX.item());
+            content.accept(DISASSEMBLY_TABLE.item());
+            content.accept(CLOCKWORK_ASSEMBLY_TABLE.item());
         });
     }
 }
