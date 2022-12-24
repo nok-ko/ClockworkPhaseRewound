@@ -45,6 +45,7 @@ public class ClockworkAttributeReloadListener implements SimpleSynchronousResour
                 var targetItem = BuiltInRegistries.ITEM.get(new ResourceLocation(data.getId()));
                 if (targetItem instanceof ClockworkAttributeReloadable) {
                     // We're good and validated, let's update those attributes!
+                    // TODO: introduce a priority queue here so conflicts between overlapping datapacks aren't resolved stochastically
                     ((ClockworkAttributeReloadable) targetItem).updateAttributes(data.getAttributes());
                 } else {
                     throw new RuntimeException(("The target specified in the JSON document (%s) was not a " +
