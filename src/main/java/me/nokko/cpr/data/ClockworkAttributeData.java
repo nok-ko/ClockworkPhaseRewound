@@ -1,5 +1,6 @@
 package me.nokko.cpr.data;
 
+import com.google.gson.JsonParseException;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import me.nokko.cpr.item.ClockworkAttr;
@@ -37,16 +38,22 @@ public class ClockworkAttributeData {
         this.attributes = attributes;
     }
 
-    public boolean isValid() {
+    public void validate() throws JsonParseException {
         // No target:
-        if (id == null) return false;
+        if (id == null)
+            throw new JsonParseException("No target was specified in JSON document");
         // Bad target:
-        if (BuiltInRegistries.ITEM.getOptional(new ResourceLocation(id)).isEmpty()) return false;
+        if (BuiltInRegistries.ITEM.getOptional(new ResourceLocation(id)).isEmpty())
+            throw new JsonParseException("The target specified in the JSON document (%s) was not found in the item registry."
+                    .formatted(id)
+            );
         // Bad modifier key:
-        if (attributes.containsKey(null)) return false;
+        if (attributes.containsKey(null))
+            throw new JsonParseException("The JSON document contains a modifier key that could not be parsed as a" +
+                    "ClockworkAttr enum value. Valid values are: " + ClockworkAttr.values());
         // Bad modifier value:
-        if (attributes.containsValue(null)) return false;
-        return true;
+        if (attributes.containsValue(null))
+            throw new JsonParseException("The JSON document contains a modifier value that is not an integer.");
     }
 
 }

@@ -36,22 +36,30 @@ public class ClockworkAttributeReloadListener implements SimpleSynchronousResour
             try (InputStream stream = resource.open()) {
                 var json = JsonParser.parseReader(new InputStreamReader(stream));
                 var data = new GsonBuilder().create().fromJson(json, ClockworkAttributeData.class);
-                if (!data.isValid()) {
-                    throw new JsonParseException("Clockwork Attribute Modifier JSON failed validation.");
-                }
+
+                // This will throw JsonParseExceptions if anything is amiss:
+                data.validate();
+
                 var targetItem = BuiltInRegistries.ITEM.get(new ResourceLocation(data.getId()));
-                // We're good and validated, let's update those attributes!
                 if (targetItem instanceof ClockworkAttributeReloadable) {
+                    // We're good and validated, let's update those attributes!
                     ((ClockworkAttributeReloadable) targetItem).updateAttributes(data.getAttributes());
+                } else {
+                    throw new RuntimeException(("The target specified in the JSON document (%s) was not a " +
+                            "ClockworkAttributeReloadable item.").formatted(data.getId()));
                 }
                 ClockworkPhaseRewound.LOGGER.info(resourceLocation.toString(), resourceLocation.toDebugFileName());
                 resourcesCount++;
             } catch (IOException exception) {
-                ClockworkPhaseRewound.LOGGER.error("Error occurred while loading resource JSON clockwork_attributes/%s.json"
+                ClockworkPhaseRewound.LOGGER.error("Error occurred while loading resource JSON `%s`"
                         .formatted(resourceLocation.toDebugFileName()));
                 ClockworkPhaseRewound.LOGGER.error(exception.toString());
             } catch (JsonParseException exception) {
-                ClockworkPhaseRewound.LOGGER.error("Error occurred while parsing resource JSON clockwork_attributes/%s.json"
+                ClockworkPhaseRewound.LOGGER.error("Error occurred while parsing resource JSON `%s`"
+                        .formatted(resourceLocation.toDebugFileName()));
+                ClockworkPhaseRewound.LOGGER.error(exception.toString());
+            } catch (RuntimeException exception) {
+                ClockworkPhaseRewound.LOGGER.error("Error occurred while modifying targets specified in resource JSON `%s`"
                         .formatted(resourceLocation.toDebugFileName()));
                 ClockworkPhaseRewound.LOGGER.error(exception.toString());
             }
