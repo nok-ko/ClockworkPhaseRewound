@@ -108,7 +108,7 @@ public class ClockworkAssemblyTableBlockEntity extends BlockEntity implements Si
             level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Block.UPDATE_ALL);
             level.playLocalSound(getBlockPos(), SoundEvents.NOTE_BLOCK_BELL.value(), SoundSource.BLOCKS, 1.0F, 1.0F, false);
         } else {
-            level.playLocalSound(getBlockPos(), SoundEvents.DISPENSER_FAIL, SoundSource.BLOCKS, 1.0F, 1.0F, false);
+            level.playLocalSound(getBlockPos(), SoundEvents.NOTE_BLOCK_SNARE.value(), SoundSource.BLOCKS, 1.0F, 1.0F, false);
         }
     }
 
