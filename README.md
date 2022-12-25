@@ -1,9 +1,14 @@
-# Fabric Example Mod
+# Clockwork Phase: Rewound
 
 ## Setup
 
-For setup instructions please see the [fabric wiki page](https://fabricmc.net/wiki/tutorial:setup) that relates to the IDE that you are using.
+Note that the mod ships with data generation code. You will need to run the `runDatagenClient` gradle task to generate 
+the various JSON files that make the mod work properly – otherwise, everything will be black-and-magenta, recipes won't 
+work, dogs and cats will live together, etc.
 
-## License
+## Data Packs & Mod Compat
 
-This template is available under the CC0 license. Feel free to learn from it and incorporate it in your own projects.
+Data packs can modify the Clockwork Attributes of a component, for example, making the brass gears provide more speed, 
+quality, or memory. See `test_data/cpr/clockwork_attribute_modifiers/` for examples, and 
+`schema/clockwork_attribute_modifier.json` for a JSON schema.
+
