@@ -1,9 +1,6 @@
 package me.nokko.cpr.init;
 
-import me.nokko.cpr.datagen.ClockworkAttributeModifierProvider;
-import me.nokko.cpr.datagen.ItemTagProvider;
-import me.nokko.cpr.datagen.ModelProvider;
-import me.nokko.cpr.datagen.RecipeProvider;
+import me.nokko.cpr.datagen.*;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 
@@ -15,7 +12,6 @@ public class ModDataGenerators implements DataGeneratorEntrypoint {
         mainPack.addProvider(ModelProvider::new);
         mainPack.addProvider(RecipeProvider::new);
         mainPack.addProvider(ClockworkAttributeModifierProvider::new);
-//        var registryAccess = RegistryAccess.fromRegistryOfRegistries(BuiltInRegistries.REGISTRY);
-//        pack.addProvider(packOutput -> new ItemModelProvider());
+        mainPack.addProvider(ClockworkBlockLootTableProvider::new);
     }
 }

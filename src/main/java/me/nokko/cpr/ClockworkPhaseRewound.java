@@ -6,6 +6,7 @@ import me.nokko.cpr.datapack.ClockworkAttributeReloadListener;
 import me.nokko.cpr.recipe.ModRecipes;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +17,10 @@ public class ClockworkPhaseRewound implements ModInitializer {
 	// That way, it's clear which mod wrote info, warnings, and errors.
 	public static final Logger LOGGER = LoggerFactory.getLogger("cpr");
 	public static final String MOD_ID = "cpr";
+
+	public static ResourceLocation id(String path) {
+		return new ResourceLocation(MOD_ID, path);
+	}
 
 	@Override
 	public void onInitialize() {
