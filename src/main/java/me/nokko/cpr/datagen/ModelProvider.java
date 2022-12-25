@@ -54,6 +54,10 @@ public class ModelProvider extends FabricModelProvider {
                 TEMPORAL_GEAR,
                 THAUMIUM_GEAR,
                 TIN_GEAR,
+                // Memory Items:
+                NOTE_BOTTLE,
+                OLD_COIN,
+                PRECIOUS_CHARM,
                 // Components:
                 CLOCKWORK,
                 FRAMEWORK

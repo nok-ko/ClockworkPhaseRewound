@@ -66,11 +66,6 @@ public class ModItems {
     @ClockworkAttributes(quality = 30, speed = 40, memory = 0)
     public static final Item TIN_GEAR = registerItem("gear_tin", new GearItem(new FabricItemSettings()) {});
 
-
-    // In original Clockwork Phase, the Memento's memory value was set by NBT data.
-    @ClockworkAttributes(quality = 0, speed = 0, memory = 0)
-    public static final Item MEMENTO = registerItem("memento", new GearItem(new FabricItemSettings()) {});
-
     @ClockworkAttributes(quality = 0, speed = 0, memory = 350)
     public static final Item NOTE_BOTTLE = registerItem("note_bottle", new GearItem(new FabricItemSettings()) {});
 
@@ -112,6 +107,11 @@ public class ModItems {
             entries.accept(TEMPORAL_GEAR);
             entries.accept(THAUMIUM_GEAR);
             entries.accept(TIN_GEAR);
+
+            // Memory Items:
+            entries.accept(NOTE_BOTTLE);
+            entries.accept(OLD_COIN);
+            entries.accept(PRECIOUS_CHARM);
 
             // Components:
             entries.accept(CLOCKWORK);

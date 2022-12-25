@@ -12,13 +12,27 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import java.util.Optional;
 
 import static me.nokko.cpr.ClockworkPhaseRewound.LOGGER;
+import static me.nokko.cpr.ClockworkPhaseRewound.MOD_ID;
 
 public class ClockworkAssemblyRecipeSerializer implements RecipeSerializer<ClockworkAssemblyRecipe> {
 
     private ClockworkAssemblyRecipeSerializer () { }
 
     public static final ClockworkAssemblyRecipeSerializer INSTANCE = new ClockworkAssemblyRecipeSerializer();
-    public static final ResourceLocation ID = new ResourceLocation(ClockworkPhaseRewound.MOD_ID, "clockwork_assembly");
+    public static final ResourceLocation ID = new ResourceLocation(MOD_ID, "clockwork_assembly");
+
+    public void toJson(ClockworkAssemblyRecipe recipe, JsonObject json) {
+        json.addProperty("type", MOD_ID + ":" + ClockworkAssemblyRecipe.Type.ID);
+        if (recipe.getTool() != null) {
+            json.add("tool", recipe.getTool().toJson());
+        }
+        if (recipe.getAdditionalItem() != null) {
+            json.add("additionalItem", recipe.getAdditionalItem().toJson());
+        }
+        if (recipe.getTransmuteItem().isPresent()) {
+            json.add("transmuteItem", recipe.getTransmuteItem().get().toJson());
+        }
+    }
 
     @Override
     public ClockworkAssemblyRecipe fromJson(ResourceLocation recipeId, JsonObject serializedRecipe) {

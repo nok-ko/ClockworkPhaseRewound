@@ -1,9 +1,0 @@
-{
-  "type": "cpr:clockwork_assembly",
-  "tool": {
-    "tag": "cpr:clockwork_tools"
-  },
-  "additionalItem": {
-    "tag": "cpr:frameworks"
-  }
-}
