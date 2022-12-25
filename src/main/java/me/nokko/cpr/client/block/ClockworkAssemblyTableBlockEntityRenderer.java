@@ -4,17 +4,23 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import me.nokko.cpr.block.entity.ClockworkAssemblyTableBlockEntity;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
+import org.joml.Math;
 
 public class ClockworkAssemblyTableBlockEntityRenderer implements BlockEntityRenderer<ClockworkAssemblyTableBlockEntity> {
 
-    private boolean additionalItemIs3d = false;
+    private final boolean additionalItemIs3d = false;
 
     public ClockworkAssemblyTableBlockEntityRenderer(BlockEntityRendererProvider.Context ctx) {
     }
@@ -88,6 +94,7 @@ public class ClockworkAssemblyTableBlockEntityRenderer implements BlockEntityRen
                        int combinedOverlay) {
         poseStack.pushPose();
 
+
         float time = blockEntity.getLevel().getGameTime();
         int lightAbove = LevelRenderer.getLightColor(blockEntity.getLevel(), blockEntity.getBlockPos().above());
 
@@ -99,8 +106,6 @@ public class ClockworkAssemblyTableBlockEntityRenderer implements BlockEntityRen
             }
             renderClockworkTool(toolStack, partialTicks, time, poseStack, buffer, lightAbove, combinedOverlay);
         }
-
-
         if (!additionalStack.isEmpty()) {
             if( is3d(additionalStack) && !toolStack.isEmpty()) {
                 poseStack.translate(0, -0.15, 0);
@@ -110,7 +115,44 @@ public class ClockworkAssemblyTableBlockEntityRenderer implements BlockEntityRen
             renderAdditionalItem(additionalStack, partialTicks, time, poseStack, buffer, lightAbove, combinedOverlay);
         }
 
+        var player = Minecraft.getInstance().player;
+        if (player == null) {
+            poseStack.popPose();
+            return;
+        }
+
+        var rayTraceStart = player.getEyePosition(partialTicks);
+        var viewVector = player.getViewVector(partialTicks);
+        var rayTraceEnd = rayTraceStart.add(viewVector.x * 20, viewVector.y * 20, viewVector.z * 20);
+        var hitResult = blockEntity.getBlockState().getShape(blockEntity.getLevel(), blockEntity.getBlockPos()).clip(rayTraceStart, rayTraceEnd, blockEntity.getBlockPos());
+
+        if (hitResult != null && hitResult.getType() != HitResult.Type.MISS) {
+            this.renderHoverSlots(poseStack, buffer);
+        }
+
         poseStack.popPose();
+    }
+
+    private void renderHoverSlots(PoseStack poseStack, MultiBufferSource buffer) {
+        double[] slotPosX = new double[8];
+        double[] slotPosY = new double[8];
+        for (int i = 0; i < 8; i++) {
+            // # rotations -> rads
+            double rotation = 6.283 * i/8;
+            // -> coordinates. these are along the circle's perimeter.
+            double perimeterX = Math.sin(rotation) * 0.75 - 0.125; // correct for width
+            double perimeterY = Math.cos(rotation) * 0.75;
+            slotPosX[i] = perimeterX + 0.5;
+            slotPosY[i] = perimeterY + 0.375;
+        }
+
+        for (int i = 0; i < 8; i++) {
+            LevelRenderer.renderLineBox(poseStack, buffer.getBuffer(RenderType.lines()),
+                    slotPosX[i], 1, slotPosY[i],
+                    slotPosX[i] + 0.25, 1.1, slotPosY[i] + 0.25,
+                    1f, 0f, 0f, 0.7f
+            );
+        }
     }
 
     private static boolean is3d(ItemStack additionalStack) {

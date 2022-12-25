@@ -1,18 +1,13 @@
 package me.nokko.cpr.block.entity;
 
 import me.nokko.cpr.block.entity.inventory.SimpleContainer;
-import me.nokko.cpr.item.ClockworkTool;
 import me.nokko.cpr.recipe.ClockworkAssemblyRecipe;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.ContainerHelper;
@@ -22,13 +17,15 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
-import static me.nokko.cpr.init.ModBlocks.CLOCKWORK_ASSEMBLY_TABLE_BLOCK_ENTITY;
 import static me.nokko.cpr.ClockworkPhaseRewound.LOGGER;
+import static me.nokko.cpr.init.ModBlocks.CLOCKWORK_ASSEMBLY_TABLE_BLOCK_ENTITY;
 import static me.nokko.cpr.init.ModItemTags.*;
 
 public class ClockworkAssemblyTableBlockEntity extends BlockEntity implements SimpleContainer {
@@ -42,8 +39,27 @@ public class ClockworkAssemblyTableBlockEntity extends BlockEntity implements Si
         return items;
     }
 
+    /**
+     * A VoxelShape that's like a big plate, slightly above the Assembly Table block and bigger than it.
+     * When a player's gaze rests upon this shape, they will see placement hints for gear items.
+     */
+    private VoxelShape gearPlacementShape;
+
+    public VoxelShape getGearPlacementShape() {
+        if (gearPlacementShape == null) {
+            return this.getBlockState().getShape(this.getLevel(), this.getBlockPos());
+        }
+        return gearPlacementShape;
+    }
+
     public ClockworkAssemblyTableBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(CLOCKWORK_ASSEMBLY_TABLE_BLOCK_ENTITY, blockPos, blockState);
+        // Maybe put the shape in the BlockState?
+        gearPlacementShape =
+            Shapes.create(
+                -0.3125, 1, -0.3125,
+                1.3125, 1.1, 1.3125
+            );
     }
 
     @Override
