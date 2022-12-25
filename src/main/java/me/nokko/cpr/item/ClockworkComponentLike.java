@@ -22,6 +22,8 @@ public interface ClockworkComponentLike {
             return true;
         }
 
+        // TODO: Maybe check a custom mod registry.
+
         // Onto checking the ItemStack's tags. Early-exit if there are no tags.
         var tag = stack.getTag();
         if (tag == null) {
