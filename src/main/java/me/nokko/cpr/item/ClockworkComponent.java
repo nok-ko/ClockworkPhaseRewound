@@ -6,6 +6,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.EnumMap;
 import java.util.List;
@@ -28,7 +29,7 @@ import java.util.Map;
  * Represents an item that modifies a clockwork tool.
  * Doesn't necessarily have to be attached to an actual Item.
  */
-interface ClockworkComponent extends ClockworkComponentLike {
+public interface ClockworkComponent extends ClockworkComponentLike {
     static String asString(ClockworkComponent component) {
         return component.getClockworkAttributes().toString();
     }
@@ -104,7 +105,7 @@ interface ClockworkComponent extends ClockworkComponentLike {
     }
 
     @Override
-    default ClockworkComponent makeComponent() {
+    default @NotNull ClockworkComponent makeComponent() {
         return this;
     }
 

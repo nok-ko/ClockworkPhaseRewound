@@ -3,6 +3,7 @@ package me.nokko.cpr;
 import me.nokko.cpr.init.ModBlocks;
 import me.nokko.cpr.init.ModItems;
 import me.nokko.cpr.datapack.ClockworkAttributeReloadListener;
+import me.nokko.cpr.init.ModRegistries;
 import me.nokko.cpr.recipe.ModRecipes;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
@@ -40,6 +41,9 @@ public class ClockworkPhaseRewound implements ModInitializer {
 		ResourceManagerHelper.get(PackType.SERVER_DATA).registerReloadListener(
 				new ClockworkAttributeReloadListener()
 		);
+
+		// Register extra components:
+		ModRegistries.registerExtraComponents();
 	}
 
 }

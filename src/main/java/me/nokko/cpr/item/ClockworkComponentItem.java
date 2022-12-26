@@ -11,7 +11,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.Map;
 
-public abstract class GearItem extends Item implements ClockworkComponent, ClockworkAttributeReloadable {
+public abstract class ClockworkComponentItem extends Item implements ClockworkComponent, ClockworkAttributeReloadable {
     protected Map<ClockworkAttr, Integer> clockworkAttributes;
 
     @Override
@@ -19,7 +19,7 @@ public abstract class GearItem extends Item implements ClockworkComponent, Clock
         return clockworkAttributes;
     }
 
-    public GearItem(Properties properties) {
+    public ClockworkComponentItem(Properties properties) {
         super(properties);
         clockworkAttributes = ClockworkComponent.defaultAttributes();
     }

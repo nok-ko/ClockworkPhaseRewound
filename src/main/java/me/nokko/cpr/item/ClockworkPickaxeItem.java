@@ -31,7 +31,7 @@ public class ClockworkPickaxeItem extends PickaxeItem implements ClockworkTool {
                     )
             );
             var stack = context.getPlayer().getItemInHand(InteractionHand.OFF_HAND);
-            var component = makeComponent(stack);
+            var component = ClockworkComponentLike.fromAnyStack(stack);
             context.getPlayer().sendSystemMessage(
                     Component.literal(
                             ClockworkComponentLike.asString(component, stack)

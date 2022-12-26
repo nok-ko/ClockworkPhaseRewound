@@ -4,6 +4,7 @@
   "package": "me.nokko.cpr.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "ClockworkComponentHoverText"
   ],
   "client": [
   ],

@@ -6,6 +6,7 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Map;
@@ -50,7 +51,7 @@ public interface ClockworkTool extends ClockworkComponentLike {
     };
 
     @Override
-    default ClockworkComponent makeComponent(ItemStack stack) {
+    default @NotNull ClockworkComponent makeComponent(ItemStack stack) {
         return new ClockworkComponentImpl(getClockworkAttributes(stack));
     }
 
